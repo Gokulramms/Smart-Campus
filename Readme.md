@@ -201,11 +201,10 @@ uvicorn main:app --reload
 ```
 
 ## Environment Variables
-Create `.env` in backend:
+Update `.env` in backend:
 ```
-GOOGLE_API_KEY=your_key_here
+GOOGLE_API_KEY=your_key_here 
 JWT_SECRET=your_secret
-EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
 ```
 
 ---
@@ -240,28 +239,4 @@ Contains:
 - No document leaves user’s system except for embedding + LLM query
 
 ---
-
-# 🧪 Roadmap
-- [ ] Add dark/light theme toggle
-- [ ] Add multi-file merge support
-- [ ] Offline inference support
-- [ ] Export notes as PDF/Docx
-- [ ] Mobile responsive redesign
-
----
-
-# 🤝 Contributions
-Pull requests are welcome!
-
----
-
-# 📄 License
-MIT License
-
----
-
-# 👨‍💻 Author
-**Gokulramms**
-
-Smart, simple, and made for students who want AI power from *their own notes*. 🎓✨
 
