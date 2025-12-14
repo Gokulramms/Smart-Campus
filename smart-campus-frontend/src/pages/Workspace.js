@@ -220,6 +220,51 @@ function Workspace({ selectedDocMeta, selectedDocId }) {
     setShareCreatedType("");
     setShareCreateError("");
   };
+const copyToClipboard = async (text) => {
+  try {
+    await navigator.clipboard.writeText(text);
+    alert("Copied to clipboard!");
+  } catch (err) {
+    alert("Failed to copy");
+  }
+};
+
+
+const downloadFile = async (type, fileName, content) => {
+  if (type === "txt") {
+    const blob = new Blob([content], { type: "text/plain" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `${fileName}.txt`;
+    link.click();
+    return;
+  }
+
+  if (type === "doc") {
+    const blob = new Blob([content], { type: "application/msword" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `${fileName}.doc`;
+    link.click();
+    return;
+  }
+};
+const downloadAsPDF = (fileName, content) => {
+  const html = `
+  <html>
+    <body style="font-family: Arial; padding:20px; white-space: pre-line;">
+      ${content.replace(/\n/g, "<br/>")}
+    </body>
+  </html>`;
+
+  const blob = new Blob([html], { type: "application/pdf" });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `${fileName}.pdf`;
+  link.click();
+};
 
   // ================== SHARE: CREATE CODE ==================
   const handleCreateShareCode = async (type) => {
@@ -853,6 +898,70 @@ function Workspace({ selectedDocMeta, selectedDocId }) {
                   }}
                 >
                   <h4 style={{ margin: 0, marginBottom: 8 }}>📌 Answer</h4>
+                  <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
+  
+  <button
+    onClick={() => copyToClipboard(answer)}
+    style={{
+      padding: "6px 12px",
+      borderRadius: 8,
+      background: "#0ea5e9",
+      border: "none",
+      color: "white",
+      cursor: "pointer",
+      fontSize: 12
+    }}
+  >
+    📋 Copy All
+  </button>
+
+  <button
+    onClick={() => downloadFile("txt", "answer", answer)}
+    style={{
+      padding: "6px 12px",
+      borderRadius: 8,
+      background: "#16a34a",
+      border: "none",
+      color: "white",
+      cursor: "pointer",
+      fontSize: 12
+    }}
+  >
+    ⬇️ TXT
+  </button>
+
+  <button
+    onClick={() => downloadFile("doc", "answer", answer)}
+    style={{
+      padding: "6px 12px",
+      borderRadius: 8,
+      background: "#f59e0b",
+      border: "none",
+      color: "white",
+      cursor: "pointer",
+      fontSize: 12
+    }}
+  >
+    ⬇️ DOC
+  </button>
+
+  <button
+    onClick={() => downloadAsPDF("answer", answer)}
+    style={{
+      padding: "6px 12px",
+      borderRadius: 8,
+      background: "#dc2626",
+      border: "none",
+      color: "white",
+      cursor: "pointer",
+      fontSize: 12
+    }}
+  >
+    ⬇️ PDF
+  </button>
+
+</div>
+
                   <div style={{ fontSize: 14, whiteSpace: "pre-wrap" }}>
                     {answer}
                   </div>
@@ -1115,6 +1224,70 @@ function Workspace({ selectedDocMeta, selectedDocId }) {
                     }}
                   >
                     <h4 style={{ margin: 0 }}>📚 Exam Answer</h4>
+                    <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
+  
+  <button
+    onClick={() => copyToClipboard(summary)}
+    style={{
+      padding: "6px 12px",
+      borderRadius: 8,
+      background: "#0ea5e9",
+      border: "none",
+      color: "white",
+      cursor: "pointer",
+      fontSize: 12
+    }}
+  >
+    📋 Copy All
+  </button>
+
+  <button
+    onClick={() => downloadFile("txt", "summary", summary)}
+    style={{
+      padding: "6px 12px",
+      borderRadius: 8,
+      background: "#16a34a",
+      border: "none",
+      color: "white",
+      cursor: "pointer",
+      fontSize: 12
+    }}
+  >
+    ⬇️ TXT
+  </button>
+
+  <button
+    onClick={() => downloadFile("doc", "summary", summary)}
+    style={{
+      padding: "6px 12px",
+      borderRadius: 8,
+      background: "#f59e0b",
+      border: "none",
+      color: "white",
+      cursor: "pointer",
+      fontSize: 12
+    }}
+  >
+    ⬇️ DOC
+  </button>
+
+  <button
+    onClick={() => downloadAsPDF("summary", summary)}
+    style={{
+      padding: "6px 12px",
+      borderRadius: 8,
+      background: "#dc2626",
+      border: "none",
+      color: "white",
+      cursor: "pointer",
+      fontSize: 12
+    }}
+  >
+    ⬇️ PDF
+  </button>
+
+</div>
+
                     {summaryMarkTypeUsed && (
                       <div
                         style={{

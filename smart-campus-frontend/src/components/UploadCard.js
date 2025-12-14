@@ -1,5 +1,5 @@
 // src/components/UploadCard.js
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useAuth } from "../context/AuthContext";
 import api from "../api/api";
 
@@ -11,10 +11,16 @@ function UploadCard({ onUploaded }) {
   const [uploadLoading, setUploadLoading] = useState(false);
   const [uploadMessage, setUploadMessage] = useState("");
 
+  const fileInputRef = useRef(null);
+
   const handleFileDrop = (e) => {
     e.preventDefault();
-    const dropped = e.dataTransfer.files[0];
-    if (dropped) setFile(dropped);
+    const droppedFile = e.dataTransfer.files[0];
+    if (droppedFile) setFile(droppedFile);
+  };
+
+  const handleBoxClick = () => {
+    fileInputRef.current.click();
   };
 
   const handleUpload = async () => {
@@ -88,8 +94,9 @@ function UploadCard({ onUploaded }) {
         onChange={(e) => setSubject(e.target.value)}
       />
 
-      {/* Drag & Drop */}
+      {/* Upload Box */}
       <div
+        onClick={handleBoxClick}
         onDrop={handleFileDrop}
         onDragOver={(e) => e.preventDefault()}
         style={{
@@ -106,16 +113,31 @@ function UploadCard({ onUploaded }) {
           transition: "0.25s",
         }}
       >
-        {file ? `📄 ${file.name}` : "Drag & drop PDF here or click"}
+        {file ? `📄 ${file.name}` : "Drag & drop file here or click"}
+
+        {/* Hidden Input — supports all formats */}
         <input
+          ref={fileInputRef}
           type="file"
-          accept="application/pdf"
+          accept="
+            application/pdf,
+            application/msword,
+            application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+            application/vnd.ms-powerpoint,
+            application/vnd.openxmlformats-officedocument.presentationml.presentation,
+            application/vnd.ms-excel,
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+            text/plain,
+            image/*,
+            .csv,
+            .zip,
+            .json
+          "
           onChange={(e) => setFile(e.target.files[0])}
           style={{ display: "none" }}
         />
       </div>
 
-      {/* Upload Button */}
       <button
         onClick={handleUpload}
         disabled={uploadLoading}
